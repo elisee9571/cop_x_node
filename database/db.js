@@ -12,7 +12,7 @@ const dbinfo = new Sequelize("db_copx", "root", "", {
     port: 3306,
     pool: {
         max: 5,
-        min: ,
+        min: 0,
     }
 }); // instance de ma base de donnée
 
