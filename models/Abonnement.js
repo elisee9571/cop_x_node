@@ -19,7 +19,23 @@ module.exports = (dbinfo, Sequelize) => {
                 type: Sequelize.DataTypes.TEXT,
                 allowNull: true
             },
-            avantage: {
+            avantage1: {
+                type: Sequelize.DataTypes.STRING(255),
+                allowNull: true
+            },
+            avantage2: {
+                type: Sequelize.DataTypes.STRING(255),
+                allowNull: true
+            },
+            avantage3: {
+                type: Sequelize.DataTypes.STRING(255),
+                allowNull: true
+            },
+            avantage4: {
+                type: Sequelize.DataTypes.STRING(255),
+                allowNull: true
+            },
+            avantage5: {
                 type: Sequelize.DataTypes.STRING(255),
                 allowNull: true
             },

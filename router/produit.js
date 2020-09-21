@@ -170,7 +170,8 @@ router.get("/all/:limit/:offset", (req, res) => {
         });
 });
 
-/* cette route nous permet de définir un ordre de produit par rapport à ca date de creation */
+/* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
+dans l'ordre descroissant*/
 router.get("/order/:limit", (req, res) => {
     db.produit
         .findAll({
@@ -182,7 +183,32 @@ router.get("/order/:limit", (req, res) => {
                 },
             ],
             order: [
-                ['createdAt', 'DESC']
+                ["created_at", "DESC"],
+            ],
+            limit: parseInt(req.params.limit),
+        })
+        .then(produits => {
+            res.status(200).json({ produits: produits })
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+/* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
+dans l'ordre croissant*/
+router.get("/order1/:limit", (req, res) => {
+    db.produit
+        .findAll({
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["created_at", "ASC"],
             ],
             limit: parseInt(req.params.limit),
         })
