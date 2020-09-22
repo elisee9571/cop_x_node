@@ -7,35 +7,64 @@ const bcrypt = require("bcrypt");
 // SECRET_KEY permet de stocker des données de façon sûre, secret est notre valeur
 process.env.SECRET_KEY = "secret";
 
-
 /* cette route permet à un utilisateur de créer un compte */
 router.post("/register", (req, res) => {
-    db.client.findOne({
+    db.client
+        .findOne({
             where: {
                 email: req.body.email
-            }
+            },
         })
-        .then(client => {
+        .then((client) => {
             if (!client) {
                 const hash = bcrypt.hashSync(req.body.password, 10);
                 req.body.password = hash;
-                db.client.create(req.body)
-                    .then(itemclient => {
-                        res.status(200).json({
-                            message: "Vous devez valider votre mail",
-                            email: itemclient.email
-                        })
+                db.client
+                    .create(req.body)
+                    .then((itemclient) => {
+                        res.setHeader("Content-Type", "text/html");
+                        var nodemailer = require("nodemailer");
+
+
+                        var transporter = nodemailer.createTransport({
+                            service: "gmail",
+                            auth: {
+                                user: "eltestnode@gmail.com",
+                                pass: "eltestnodemailer"
+                            },
+                        });
+
+                        var mailOptions = {
+                            from: "eltestnode@gmail.com",
+                            to: itemclient.email,
+                            subject: "Sending Email using Node.js",
+                            html: "<a href=http://localhost:8080/validemail/" + itemclient.email + ">Valider votre mail</a>",
+                        };
+
+                        transporter.sendMail(mailOptions, function(error, info) {
+                            if (error) {
+                                return res.json(error);
+                                console.log(error);
+                            } else {
+                                console.log("email sent" + info.response);
+                                return res.status(200).json({
+                                    message: "Vous devez valider votre mail",
+                                    email: itemclient.email,
+                                    email_sent: info.response,
+                                });
+                            }
+                        });
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         res.json(err);
-                    })
+                    });
             } else {
-                res.json("Cette adresse mail est déjà utilisée");
+                res.json("cette adresse mail et déja utilisée");
             }
         })
-        .catch(err => {
+        .catch((err) => {
             res.json(err);
-        })
+        });
 });
 
 
@@ -131,6 +160,7 @@ router.post("/updatepassword", (req, res) => {
 });
 
 
+
 /* cette route permet à l'utilisateur de pouvoir valider son mail une fois le compte crée */
 router.post("/validemail", (req, res) => {
 
@@ -141,6 +171,7 @@ router.post("/validemail", (req, res) => {
         })
         .then(client => {
             if (client) {
+                /* si tu trouve l'utilisateur tu met son status en true si il est different de 1*/
                 if (client.status !== 1) {
 
                     client.update({
@@ -285,12 +316,6 @@ router.put("/update/:id", (req, res) => {
             res.json(err);
         })
 });
-
-
-
-
-
-
 
 
 
