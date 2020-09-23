@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database/db");
 
-const { Op } = require("sequelize"); // declare les opérateurs
+const {
+    Op
+} = require("sequelize"); // declare les opérateurs
 
 /* cette route post nous permet de créer un produit avec postman */
 router.post("/new", (req, res) => {
@@ -12,7 +14,9 @@ router.post("/new", (req, res) => {
     var ref = req.body.ref;
 
     db.produit.findOne({
-            where: { nom: req.body.nom }
+            where: {
+                nom: req.body.nom
+            }
         })
         .then(produit => {
             if (!produit) {
@@ -34,7 +38,9 @@ router.post("/new", (req, res) => {
                                             })
                                             .then(() => {
                                                 db.produit.findOne({
-                                                        where: { id: itemproduit.id },
+                                                        where: {
+                                                            id: itemproduit.id
+                                                        },
                                                         include: [{
                                                                 model: db.image
                                                             },
@@ -44,7 +50,9 @@ router.post("/new", (req, res) => {
                                                         ]
                                                     })
                                                     .then(produit => {
-                                                        res.status(200).json({ produit: produit })
+                                                        res.status(200).json({
+                                                            produit: produit
+                                                        })
                                                     })
                                                     .catch(err => {
                                                         res.status(502).json(err);
@@ -79,9 +87,12 @@ router.post("/new", (req, res) => {
 /* cette route nous permet de connaitre nos produits */
 router.get("/All", (req, res) => {
     db.produit.findAll({
-            include: [
-                { model: db.image },
-                { model: db.taille },
+            include: [{
+                    model: db.image
+                },
+                {
+                    model: db.taille
+                },
             ]
         })
         .then(produit => {
@@ -90,7 +101,9 @@ router.get("/All", (req, res) => {
                 res.status(404).json("pas de liste de produits dans la base ")
             } else {
 
-                res.status(200).json({ produits: produit })
+                res.status(200).json({
+                    produits: produit
+                })
             }
         })
         .catch(err => {
@@ -102,7 +115,9 @@ router.get("/All", (req, res) => {
 router.get("/categorie/:categorie", (req, res) => {
     db.produit.findAll({
 
-            where: { categorie: req.params.categorie },
+            where: {
+                categorie: req.params.categorie
+            },
 
             include: [{
                     model: db.image,
@@ -118,13 +133,50 @@ router.get("/categorie/:categorie", (req, res) => {
                 res.status(404).json("pas de liste de produits dans la base ")
             } else {
 
-                res.status(200).json({ produits: produit })
+                res.status(200).json({
+                    produits: produit
+                })
             }
         })
         .catch(err => {
             res.status(400).json(err)
         })
 });
+
+/* cette route nous permet de connaitre nos produits par marque sous categorie */
+/* router.get("/marque/:categorie", (req, res) => {
+    db.produit.findAll({
+
+            where: {
+                categorie: req.params.categorie,
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["marque", "DESC"],
+            ],
+        })
+        .then(produit => {
+
+            if (produit == []) {
+                res.status(404).json("pas de liste de produits dans la base ")
+            } else {
+
+                res.status(200).json({
+                    produits: produit
+                })
+            }
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        })
+}); */
 
 /* cette route nous permet de définir une limite */
 router.get("/limit/:limit", (req, res) => {
@@ -139,7 +191,9 @@ router.get("/limit/:limit", (req, res) => {
             limit: parseInt(req.params.limit),
         })
         .then(produits => {
-            res.status(200).json({ produits: produits })
+            res.status(200).json({
+                produits: produits
+            })
         })
         .catch(err => {
             res.status(502).json("bad req" + err);
@@ -163,7 +217,38 @@ router.get("/all/:limit/:offset", (req, res) => {
             limit: parseInt(req.params.limit),
         })
         .then(produits => {
-            res.status(200).json({ produits: produits })
+            res.status(200).json({
+                produits: produits
+            })
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+/* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
+dans l'ordre descroissant*/
+router.get("/order/:categorie", (req, res) => {
+    db.produit
+        .findAll({
+            where: {
+                categorie: req.params.categorie
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["created_at", "DESC"],
+            ],
+        })
+        .then(produits => {
+            res.status(200).json({
+                produits: produits
+            })
         })
         .catch((err) => {
             res.json(err);
@@ -171,8 +256,8 @@ router.get("/all/:limit/:offset", (req, res) => {
 });
 
 /* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
-dans l'ordre descroissant*/
-router.get("/order/:limit", (req, res) => {
+dans l'ordre descroissant avc une limit*/
+router.get("/order1/:limit", (req, res) => {
     db.produit
         .findAll({
             include: [{
@@ -188,7 +273,9 @@ router.get("/order/:limit", (req, res) => {
             limit: parseInt(req.params.limit),
         })
         .then(produits => {
-            res.status(200).json({ produits: produits })
+            res.status(200).json({
+                produits: produits
+            })
         })
         .catch((err) => {
             res.json(err);
@@ -196,8 +283,8 @@ router.get("/order/:limit", (req, res) => {
 });
 
 /* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
-dans l'ordre croissant*/
-router.get("/order1/:limit", (req, res) => {
+dans l'ordre croissant avec une limit*/
+router.get("/order2/:limit", (req, res) => {
     db.produit
         .findAll({
             include: [{
@@ -213,12 +300,73 @@ router.get("/order1/:limit", (req, res) => {
             limit: parseInt(req.params.limit),
         })
         .then(produits => {
-            res.status(200).json({ produits: produits })
+            res.status(200).json({
+                produits: produits
+            })
         })
         .catch((err) => {
             res.json(err);
         });
 });
+
+/* cette route nous permet de filtret les prix dans l'ordre croissant*/
+router.get("/prix/:categorie", (req, res) => {
+    db.produit
+        .findAll({
+            where: {
+                categorie: req.params.categorie
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["prix", "ASC"],
+            ],
+        })
+        .then(produits => {
+            res.status(200).json({
+                produits: produits
+            })
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+/* cette route nous permet de filtrer les prix dans l'ordre décroissant*/
+router.get("/prix1/:categorie", (req, res) => {
+    db.produit
+        .findAll({
+            where: {
+                categorie: req.params.categorie
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["prix", "DESC"],
+            ],
+        })
+        .then(produits => {
+            res.status(200).json({
+                produits: produits
+            })
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
 
 
 /* cette route nous permet d'ajouter une image à un produit */
@@ -230,7 +378,9 @@ router.post("/addimage", (req, res) => {
         })
         .then(() => {
             db.produit.findOne({
-                    where: { id: req.body.id },
+                    where: {
+                        id: req.body.id
+                    },
                     include: [{
                             model: db.image
                         },
@@ -260,7 +410,9 @@ router.post("/addtaille", (req, res) => {
         })
         .then(() => {
             db.produit.findOne({
-                    where: { id: req.body.id },
+                    where: {
+                        id: req.body.id
+                    },
                     include: [{
                             model: db.image
                         },
@@ -294,10 +446,15 @@ router.get("/findBy/:nom", (req, res) => {
                 {
                     model: db.taille,
                 },
-            ]
+            ],
+            order: [
+                ["created_at", "DESC"],
+            ],
         })
         .then(produits => {
-            res.status(200).json({ produits: produits })
+            res.status(200).json({
+                produits: produits
+            })
         })
         .catch(err => {
             res.json(err);
@@ -307,7 +464,9 @@ router.get("/findBy/:nom", (req, res) => {
 router.get("/getById/:id", (req, res) => {
     db.produit
         .findOne({
-            where: { id: req.params.id },
+            where: {
+                id: req.params.id,
+            },
             include: [{
                     model: db.image,
                 },
@@ -317,7 +476,9 @@ router.get("/getById/:id", (req, res) => {
             ],
         })
         .then((produit) => {
-            res.status(200).json({ produit: produit });
+            res.status(200).json({
+                produit: produit
+            });
         })
         .catch((err) => {
             res.json(err);

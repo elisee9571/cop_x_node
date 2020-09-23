@@ -246,7 +246,7 @@ router.post("/login", (req, res) => {
 });
 
 
-router.get("/profil/:id", (req, res) => {
+/* router.get("/profil/:id", (req, res) => {
     db.client.findOne({
             where: {
                 id: req.params.id
@@ -256,8 +256,8 @@ router.get("/profil/:id", (req, res) => {
             if (client) {
                 let token = jwt.sign(client.dataValues,
                     process.env.SECRET_KEY, {
-                        expiresIn: 1800,
-                        /* 30min */
+                        expiresIn: 1800,// 30min
+                        
                     });
                 res.status(200).json({
                     token: token
@@ -269,7 +269,7 @@ router.get("/profil/:id", (req, res) => {
         .catch(err => {
             res.json(err)
         })
-});
+}); */
 
 
 /* cette route permet de mettre le profil à jour */
