@@ -17,7 +17,7 @@ router.post("/sendmail", (req, res) => {
     var mailOptions = {
         from: "eltest2node@gmail.com",
         to: req.body.email,
-        subject: req.body.obj,
+        subject: req.body.subject,
         text: req.body.text
     }
     transporter.sendMail(mailOptions, (error, info) => {

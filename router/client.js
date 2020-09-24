@@ -125,7 +125,7 @@ router.post("/forgetpassword", (req, res) => {
 
 
 /* cette route permet à l'utilisateur de pouvoir modifier son mdp */
-router.post("/updatepassword", (req, res) => {
+router.get("/updatepassword", (req, res) => {
 
     db.client.findOne({
             where: {
@@ -139,7 +139,7 @@ router.post("/updatepassword", (req, res) => {
                 req.body.password = hash;
                 client.update({
                         password: req.body.password,
-                        forget: null
+                        forget: req.body.password,
 
                     })
                     .then(() => {
@@ -245,8 +245,8 @@ router.post("/login", (req, res) => {
         })
 });
 
-
-/* router.get("/profil/:id", (req, res) => {
+/* cette route permet de reccupérer les info du profil */
+router.get("/profil/:id", (req, res) => {
     db.client.findOne({
             where: {
                 id: req.params.id
@@ -256,8 +256,8 @@ router.post("/login", (req, res) => {
             if (client) {
                 let token = jwt.sign(client.dataValues,
                     process.env.SECRET_KEY, {
-                        expiresIn: 1800,// 30min
-                        
+                        expiresIn: 1800, // 30min
+
                     });
                 res.status(200).json({
                     token: token
@@ -269,7 +269,7 @@ router.post("/login", (req, res) => {
         .catch(err => {
             res.json(err)
         })
-}); */
+});
 
 
 /* cette route permet de mettre le profil à jour */
@@ -290,6 +290,52 @@ router.put("/update/:id", (req, res) => {
                         db.client.findOne({
                                 where: {
                                     id: clientitem.id
+                                }
+                            })
+                            .then(client => {
+                                let token = jwt.sign(client.dataValues,
+                                    process.env.SECRET_KEY, {
+                                        expiresIn: 1800, //s
+                                    });
+                                res.status(200).json({
+                                    token: token
+                                })
+                            })
+                            .catch(err => {
+                                res.status(402).send(err + 'bad request')
+                            })
+                    })
+                    .catch(err => {
+                        res.status(402).send("impossible de metter à jour le client" + err);
+                    })
+            } else {
+                res.json("client n'est pas dans la base ")
+            }
+        })
+        .catch(err => {
+            res.json(err);
+        })
+});
+
+/* cette route permet de mettre le mdp a jour */
+router.get("/updatepass/:id", (req, res) => {
+    db.client.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then(client => {
+            if (client) {
+                /* cette ligne permet de demander le mdp avant de mettre à jour */
+                password = bcrypt.hashSync(req.body.password, 10);
+                req.body.password = password;
+                client.update(req.body)
+                    .then(clientitem => {
+                        console.log(clientitem);
+                        db.client.findOne({
+                                where: {
+                                    id: clientitem.id,
+                                    forget: req.body.forget,
                                 }
                             })
                             .then(client => {
