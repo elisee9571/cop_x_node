@@ -41,7 +41,43 @@ router.post("/register", (req, res) => {
                             from: "eltest2node@gmail.com",
                             to: itemclient.email,
                             subject: "Confirmation d'inscription Cop X",
-                            html: "<a href=http://localhost:8080/validemail/" + itemclient.email + ">Confirmer votre mail</a>"
+                            html: `
+                            <div style="height:100vh; width: 100%; 
+        background-image: url(https://www.cjoint.com/doc/20_09/JIzrJ408UGw_mail-image.jpeg); 
+        background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div>
+                <br> <br>
+                <div>
+                    <h1 style=" font-family: 'Bebas Neue'; font-size: 40px; text-align: center; color:#6844ff; text-shadow: 0 0 10px #000;">
+                        <img src="https://www.cjoint.com/doc/20_09/JIzrTgtdRMw_logo2.png" width="275" height="100">
+                        <br>
+                        <br>
+                        Bienvenue Sur Cop X </h1>
+                </div>
+            </div>
+            <br>
+            <h3 style="color:#fff; text-align:center; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #000;">
+                Nous vous remerçions de faire partie de la famille Cop X, <br>ci-dessous
+                vous trouverez le lien qui vous permettra de validez votre email et activez votre compte.
+            </h3>
+            <br>
+            <p style=" text-align: center; font-size: 20px;">
+                <a href=http://localhost:8080/validemail/` + itemclient.email + `>Confirmer votre mail</a>
+            </p>
+            <br>
+            <h3 style="color:#fff; text-align:center; font-size: 20px; font-weight: bold; text-shadow: 0 0 5px #000;">
+                <strong style="color:#6844ff;font-size: 20px;">Attention:</strong> vous ne devez transmettre vos identifiant à
+                personne<br> <br> <br>
+                <p style="color:#fff; text-align: center;">
+                    <span style="color:#6844ff !important;">
+                        Votre identifiant :</span> ${req.body.email}
+                </p>
+                <br>
+                 <p style="color:#fff; text-align: center; font-size: 15px;">
+                     L'équipe Cop X, à très bientôt sur notre site.
+            </p>
+            </h3>
+        </div>`
                         };
                         transporter.sendMail(mailOptions, function(error, info) {
                             if (error) {
