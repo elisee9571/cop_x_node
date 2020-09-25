@@ -9,63 +9,151 @@ process.env.SECRET_KEY = "secret";
 
 /* cette route permet à un utilisateur de créer un compte */
 router.post("/register", (req, res) => {
-    db.client
-        .findOne({
+    db.client.findOne({
             where: {
                 email: req.body.email
-            },
+            }
         })
-        .then((client) => {
+        .then(client => {
             if (!client) {
                 const hash = bcrypt.hashSync(req.body.password, 10);
                 req.body.password = hash;
-                db.client
-                    .create(req.body)
-                    .then((itemclient) => {
-                        res.setHeader("Content-Type", "text/html");
+                db.client.create(req.body)
+                    .then(itemclient => {
+                        /* res.setHeader('Content-Type', 'text/html'); */
                         var nodemailer = require("nodemailer");
-
-
                         var transporter = nodemailer.createTransport({
+                            /* host: 'smtp.gmail.com',
+                            port: '587', */
                             service: "gmail",
                             auth: {
-                                user: "eltestnode@gmail.com",
-                                pass: "eltestnodemailer"
+                                user: "eltest2node@gmail.com",
+                                pass: "Eltest2nodemailer"
                             },
+                            /* secureConnection: 'false',
+                            tls: {
+                                ciphers: 'SSLv3',
+                                rejectUnauthorized: false
+                            } */
+
                         });
-
                         var mailOptions = {
-                            from: "eltestnode@gmail.com",
+                            from: "eltest2node@gmail.com",
                             to: itemclient.email,
-                            subject: "Sending Email using Node.js",
-                            html: "<a href=http://localhost:8080/validemail/" + itemclient.email + ">Valider votre mail</a>",
+                            subject: "Confirmation d'inscription Cop X",
+                            html: "<a href=http://localhost:8080/validemail/" + itemclient.email + ">Confirmer votre mail</a>"
                         };
-
                         transporter.sendMail(mailOptions, function(error, info) {
                             if (error) {
-                                return res.json(error);
                                 console.log(error);
+                                return res.json(error);
+
                             } else {
                                 console.log("email sent" + info.response);
                                 return res.status(200).json({
                                     message: "Vous devez valider votre mail",
                                     email: itemclient.email,
-                                    email_sent: info.response,
-                                });
+                                    email_sent: info.response
+                                })
                             }
                         });
+
                     })
-                    .catch((err) => {
-                        res.json(err);
-                    });
+                    .catch(err => {
+                        res.json(err)
+                    })
+
+
             } else {
-                res.json("cette adresse mail et déja utilisée");
+                res.json("cette adresse email est déjà utilisée")
             }
         })
-        .catch((err) => {
-            res.json(err);
-        });
+        .catch(err => {
+            res.json(err)
+        })
 });
+
+
+/* router.post("/register", (req, res) => {
+    // On vas verifier a partir de sont email
+    db.client.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        // Ensuite tu me retourne client
+        .then(client => {
+            if (!client) {
+                // Le salt 10 , un script de 10 caracteres au debut 
+                // du cryptage puis de 45 autre caracteres voir plus.
+                //  la je lui demande de me hacher mon mdp en le fesant etape par etape
+                const hash = bcrypt.hashSync(req.body.password, 10);
+                // Je réaffecte le resultat précédent dans req.body.password avant qu'il soit envoyé dans la database
+                req.body.password = hash;
+                db.client.create(req.body)
+                    .then(client => {
+
+                        transporter.sendMail({
+
+                                to: req.body.email,
+                                from: 'eltestnode@gmail.com',
+                                subject: "Confirmation d'inscription Cop X",
+                                html: `
+                            <div  style="height:500px; width: 100%; background-image: url(https://www.cjoint.com/doc/20_09/JInrmwR8Uvx_cqNgx7LQoc.jpg); 
+                            background-size: cover; background-position: center; background-repeat: no-repeat;">
+                            <div>
+  
+                            <br> <br>
+                                <div>
+                                    <h1 style=" font-family: 'Times New Roman'; font-weight: bold; text-align: center;font-size: 26px; color:#ff4949;">  
+                                    Bienvenue Sur Notre Site, Sneakers Watch  </h1>
+                                </div>
+                            </div>
+                           
+                                 <br>
+                                    <br>
+                                    <h3 style="color:#DCDCDC; text-align:center; font-size: 14px; font-weight: bold;" >
+                                    Vous avez reçu ce courriel parce que vous vous  êtes récemment inscrit à nos site Sneakers Watch , veuillez trouvez ci-dessous votre identifiant
+                                    </h3>
+                                    <br>
+                                    <br>
+                                    <p style=" text-align: center;" >
+                                    <span style="color:#ff4949;">
+                                    - Identifiant </span>: ${req.body.email} 
+                                    </p> 
+                                    <br> 
+                                    <h3 style="color:#DCDCDC; text-align:center; font-size: 14px; font-weight: bold;" >
+                                    Merci et à très bientôt    <br>   <br>   <br> 
+                                    <img src="https://www.cjoint.com/doc/20_09/JInpYq3gpvx_logo-sneakers-watch.png" width="100"; ></h3>
+                            </div>`
+                            })
+                            // je cree la signature de mon token en lui donnant mon secret_key=RS9
+                        let token = jwt.sign(client.dataValues, process.env.SECRET_KEY, {
+                            expiresIn: 1440
+                        });
+                        // Je recupere le token
+                        
+                        il envoie la reponse en json
+                        
+                        res.json({
+                            token: token
+                        })
+                    })
+                    .catch(err => {
+                        res.send('error ' + err)
+                    })
+            } else {
+                res.json({
+                    error: "Le client existe déjà"
+                })
+            }
+        })
+        .catch(err => {
+            res.json({
+                error: "error" + err
+            })
+        })
+}); */
 
 
 /* cette route permet à l'utilisateur de recevoir un mail avec un lien pour changer son mdp oublié */
@@ -96,8 +184,6 @@ router.post("/forgetpassword", (req, res) => {
                             from: "eltestnode@gmail.com",
                             to: item.email,
                             subject: "Sending Email using Node.js",
-                            //text: "http://localhost:3000/client/pwd/" + item.forget,
-
                             html: "<a href=http://localhost:8080/client/pwd/" + item.forget + ">Mettre à jour le mot de passe</a>"
                         };
 
@@ -139,7 +225,7 @@ router.get("/updatepassword", (req, res) => {
                 req.body.password = hash;
                 client.update({
                         password: req.body.password,
-                        forget: req.body.password,
+                        forget: null,
 
                     })
                     .then(() => {
@@ -177,7 +263,7 @@ router.post("/validemail", (req, res) => {
                     client.update({
                             status: 1
                         })
-                        .then(() => {
+                        .then((itemclient) => {
                             res.json({
                                 message: "Votre mail est validé"
                             })
