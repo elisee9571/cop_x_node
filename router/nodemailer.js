@@ -12,6 +12,7 @@ router.post("/sendmail", (req, res) => {
         auth: {
             user: "eltest2node@gmail.com",
             pass: "Eltest2nodemailer"
+
         },
         /* secureConnection: 'false',
         tls: {
@@ -21,8 +22,10 @@ router.post("/sendmail", (req, res) => {
 
     });
     var mailOptions = {
-        from: "eltest2node@gmail.com",
-        to: itemclient.email,
+        /* from: "eltest2node@gmail.com",
+        to: req.body.email, */
+        from: req.body.email,
+        to: "eltest2node@gmail.com",
         subject: req.body.subject,
         text: req.body.text,
     };

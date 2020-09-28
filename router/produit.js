@@ -125,7 +125,10 @@ router.get("/categorie/:categorie", (req, res) => {
                 {
                     model: db.taille,
                 },
-            ]
+            ],
+            order: [
+                ["created_at", "DESC"],
+            ],
         })
         .then(produit => {
 
@@ -142,41 +145,6 @@ router.get("/categorie/:categorie", (req, res) => {
             res.status(400).json(err)
         })
 });
-
-/* cette route nous permet de connaitre nos produits par marque sous categorie */
-/* router.get("/marque/:categorie", (req, res) => {
-    db.produit.findAll({
-
-            where: {
-                categorie: req.params.categorie,
-            },
-
-            include: [{
-                    model: db.image,
-                },
-                {
-                    model: db.taille,
-                },
-            ],
-            order: [
-                ["marque", "DESC"],
-            ],
-        })
-        .then(produit => {
-
-            if (produit == []) {
-                res.status(404).json("pas de liste de produits dans la base ")
-            } else {
-
-                res.status(200).json({
-                    produits: produit
-                })
-            }
-        })
-        .catch(err => {
-            res.status(400).json(err)
-        })
-}); */
 
 /* cette route nous permet de définir une limite */
 router.get("/limit/:limit", (req, res) => {
@@ -373,7 +341,6 @@ router.get("/prix1/:categorie", (req, res) => {
 router.post("/addimage", (req, res) => {
     db.image.create({
             image: req.body.image,
-            ref: req.body.ref,
             produitId: req.body.id,
         })
         .then(() => {
@@ -405,7 +372,6 @@ router.post("/addimage", (req, res) => {
 router.post("/addtaille", (req, res) => {
     db.taille.create({
             taille: req.body.taille,
-            ref: req.body.ref,
             produitId: req.body.id,
         })
         .then(() => {

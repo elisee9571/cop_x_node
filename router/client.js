@@ -66,8 +66,8 @@ router.post("/register", (req, res) => {
             </p>
             <br>
             <h3 style="color:#fff; text-align:center; font-size: 20px; font-weight: bold; text-shadow: 0 0 5px #000;">
-                <strong style="color:#6844ff;font-size: 20px;">Attention:</strong> vous ne devez transmettre vos identifiant à
-                personne<br> <br> <br>
+                <strong style="color:#6844ff;font-size: 20px;">Attention:</strong> ne transmettez pas votre identifiant ainsi que votre mot de passe!
+                <br> <br> <br>
                 <p style="color:#fff; text-align: center;">
                     <span style="color:#6844ff !important;">
                         Votre identifiant :</span> ${req.body.email}
@@ -110,88 +110,6 @@ router.post("/register", (req, res) => {
 });
 
 
-/* router.post("/register", (req, res) => {
-    // On vas verifier a partir de sont email
-    db.client.findOne({
-            where: {
-                email: req.body.email
-            }
-        })
-        // Ensuite tu me retourne client
-        .then(client => {
-            if (!client) {
-                // Le salt 10 , un script de 10 caracteres au debut 
-                // du cryptage puis de 45 autre caracteres voir plus.
-                //  la je lui demande de me hacher mon mdp en le fesant etape par etape
-                const hash = bcrypt.hashSync(req.body.password, 10);
-                // Je réaffecte le resultat précédent dans req.body.password avant qu'il soit envoyé dans la database
-                req.body.password = hash;
-                db.client.create(req.body)
-                    .then(client => {
-
-                        transporter.sendMail({
-
-                                to: req.body.email,
-                                from: 'eltestnode@gmail.com',
-                                subject: "Confirmation d'inscription Cop X",
-                                html: `
-                            <div  style="height:500px; width: 100%; background-image: url(https://www.cjoint.com/doc/20_09/JInrmwR8Uvx_cqNgx7LQoc.jpg); 
-                            background-size: cover; background-position: center; background-repeat: no-repeat;">
-                            <div>
-  
-                            <br> <br>
-                                <div>
-                                    <h1 style=" font-family: 'Times New Roman'; font-weight: bold; text-align: center;font-size: 26px; color:#ff4949;">  
-                                    Bienvenue Sur Notre Site, Sneakers Watch  </h1>
-                                </div>
-                            </div>
-                           
-                                 <br>
-                                    <br>
-                                    <h3 style="color:#DCDCDC; text-align:center; font-size: 14px; font-weight: bold;" >
-                                    Vous avez reçu ce courriel parce que vous vous  êtes récemment inscrit à nos site Sneakers Watch , veuillez trouvez ci-dessous votre identifiant
-                                    </h3>
-                                    <br>
-                                    <br>
-                                    <p style=" text-align: center;" >
-                                    <span style="color:#ff4949;">
-                                    - Identifiant </span>: ${req.body.email} 
-                                    </p> 
-                                    <br> 
-                                    <h3 style="color:#DCDCDC; text-align:center; font-size: 14px; font-weight: bold;" >
-                                    Merci et à très bientôt    <br>   <br>   <br> 
-                                    <img src="https://www.cjoint.com/doc/20_09/JInpYq3gpvx_logo-sneakers-watch.png" width="100"; ></h3>
-                            </div>`
-                            })
-                            // je cree la signature de mon token en lui donnant mon secret_key=RS9
-                        let token = jwt.sign(client.dataValues, process.env.SECRET_KEY, {
-                            expiresIn: 1440
-                        });
-                        // Je recupere le token
-                        
-                        il envoie la reponse en json
-                        
-                        res.json({
-                            token: token
-                        })
-                    })
-                    .catch(err => {
-                        res.send('error ' + err)
-                    })
-            } else {
-                res.json({
-                    error: "Le client existe déjà"
-                })
-            }
-        })
-        .catch(err => {
-            res.json({
-                error: "error" + err
-            })
-        })
-}); */
-
-
 /* cette route permet à l'utilisateur de recevoir un mail avec un lien pour changer son mdp oublié */
 router.post("/forgetpassword", (req, res) => {
     var randtoken = require('rand-token');
@@ -211,16 +129,16 @@ router.post("/forgetpassword", (req, res) => {
                         var transporter = nodemailer.createTransport({
                             service: "gmail",
                             auth: {
-                                user: "eltestnode@gmail.com",
-                                pass: "eltestnodemailer"
+                                user: "eltest2node@gmail.com",
+                                pass: "Eltest2nodemailer"
                             },
                         });
 
                         var mailOptions = {
-                            from: "eltestnode@gmail.com",
+                            from: "eltest2node@gmail.com",
                             to: item.email,
-                            subject: "Sending Email using Node.js",
-                            html: "<a href=http://localhost:8080/client/pwd/" + item.forget + ">Mettre à jour le mot de passe</a>"
+                            subject: "Réinitialiser le mot de passe",
+                            html: "<a href=http://localhost:8080/updatepassword/" + item.forget + ">Mettre à jour le mot de passe</a>"
                         };
 
                         transporter.sendMail(mailOptions, function(error, info) {
