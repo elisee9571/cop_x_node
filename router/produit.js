@@ -146,6 +146,41 @@ router.get("/categorie/:categorie", (req, res) => {
         })
 });
 
+/* //cette route nous permet de connaitre nos produits par marque
+router.get("/marque/:marque", (req, res) => {
+    db.produit.findAll({
+
+            where: {
+                marque: req.params.marque
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            order: [
+                ["created_at", "DESC"],
+            ],
+        })
+        .then(produit => {
+
+            if (produit == []) {
+                res.status(404).json("pas de liste de produits dans la base ")
+            } else {
+
+                res.status(200).json({
+                    produits: produit
+                })
+            }
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        })
+}); */
+
 /* cette route nous permet de définir une limite */
 router.get("/limit/:limit", (req, res) => {
     db.produit.findAll({

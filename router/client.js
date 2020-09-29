@@ -165,7 +165,7 @@ router.post("/forgetpassword", (req, res) => {
 
 
 /* cette route permet à l'utilisateur de pouvoir modifier son mdp */
-router.get("/updatepassword", (req, res) => {
+router.post("/updatepassword", (req, res) => {
 
     db.client.findOne({
             where: {
