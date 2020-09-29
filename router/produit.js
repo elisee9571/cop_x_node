@@ -125,7 +125,10 @@ router.get("/categorie/:categorie", (req, res) => {
                 {
                     model: db.taille,
                 },
-            ]
+            ],
+            order: [
+                ["created_at", "DESC"],
+            ],
         })
         .then(produit => {
 
@@ -143,12 +146,12 @@ router.get("/categorie/:categorie", (req, res) => {
         })
 });
 
-/* cette route nous permet de connaitre nos produits par marque sous categorie */
-/* router.get("/marque/:categorie", (req, res) => {
+/* //cette route nous permet de connaitre nos produits par marque
+router.get("/marque/:marque", (req, res) => {
     db.produit.findAll({
 
             where: {
-                categorie: req.params.categorie,
+                marque: req.params.marque
             },
 
             include: [{
@@ -159,7 +162,7 @@ router.get("/categorie/:categorie", (req, res) => {
                 },
             ],
             order: [
-                ["marque", "DESC"],
+                ["created_at", "DESC"],
             ],
         })
         .then(produit => {
@@ -373,7 +376,6 @@ router.get("/prix1/:categorie", (req, res) => {
 router.post("/addimage", (req, res) => {
     db.image.create({
             image: req.body.image,
-            ref: req.body.ref,
             produitId: req.body.id,
         })
         .then(() => {
@@ -405,7 +407,6 @@ router.post("/addimage", (req, res) => {
 router.post("/addtaille", (req, res) => {
     db.taille.create({
             taille: req.body.taille,
-            ref: req.body.ref,
             produitId: req.body.id,
         })
         .then(() => {
