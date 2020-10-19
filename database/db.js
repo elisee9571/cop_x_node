@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 const db = {};
 
 
-// new Sequelize crée une instance qui permet la connection à la base de donnée (qu'on a nommé "dbformation")
+// new Sequelize crée une instance qui permet la connection à la base de donnée (qu'on a nommé "db_copx")
 const dbinfo = new Sequelize("db_copx", "root", "", {
     host: "localhost",
     dialect: "mysql",
