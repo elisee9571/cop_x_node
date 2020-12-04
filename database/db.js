@@ -163,3 +163,5 @@ db.Sequelize = Sequelize;
 
 
 module.exports = db;
+
+/* test */
