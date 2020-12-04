@@ -35,6 +35,16 @@ module.exports = (dbinfo, Sequelize) => {
                 type: Sequelize.DataTypes.TEXT,
                 allowNull: true
             },
+            stock: {
+                //set data type with out max length
+                type: Sequelize.DataTypes.INTEGER(5),
+            },
+            status: {
+                //set data type with max length
+                type: Sequelize.DataTypes.BOOLEAN,
+                // setting allowNull to false will add NOT NULL to the column, which means an error will be if you add info in this column
+                allowNull: true
+            },
         }, {
             /**
              * By default, Sequelize will add the attributes createdAt and updatedAt to your model so you will be able to know when the database entry went into the db and when it was updated last.

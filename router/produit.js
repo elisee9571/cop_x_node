@@ -77,6 +77,18 @@ router.post("/new", (req, res) => {
 
             } else {
                 res.json("produit déja bas la base");
+                produit
+                    .update({
+                        stock: req.body.stock,
+                    })
+                    .then((rep) => {
+                        res.status(200).json({
+                            produit: rep
+                        });
+                    })
+                    .catch((err) => {
+                        res.status(403).json("pas à jour");
+                    });
             }
         })
         .catch(err => {
@@ -460,6 +472,57 @@ router.get("/prix00/:marque/:categorie", (req, res) => {
             res.json(err);
         });
 });
+/* /* cette route nous peremet de recuperer le produit id 
+router.get("/getById/:id/:marque/:categorie", (req, res) => {
+    db.produit
+        .findOne({
+            where: {
+                id: req.params.id,
+                categorie: req.params.categorie,
+                marque: req.params.marque,
+            },
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+        })
+        .then((produit) => {
+            res.status(200).json({
+                produit: produit
+            });
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});*/
+/* cette route nous peremet de recuperer le produit id 
+router.get("/getById/:id/:categorie", (req, res) => {
+    db.produit
+        .findOne({
+            where: {
+                id: req.params.id,
+                categorie: req.params.categorie,
+            },
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+        })
+        .then((produit) => {
+            res.status(200).json({
+                produit: produit
+            });
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+}); */
 
 
 /* cette route nous permet d'ajouter une image à un produit */

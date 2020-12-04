@@ -38,16 +38,19 @@ app.use(BodyParser.json());
 
 
 // app.use permet de rendre utilisable nos routes
-app.use("/produit", require("./router/Produit"));
+app.use("/produit", require("./router/produit"));
 
-app.use("/abonnement", require("./router/Abonnement"));
+app.use("/abonnement", require("./router/abonnement"));
 
-app.use("/facture", require("./router/Facture"));
+app.use("/facture", require("./router/facture"));
 
-app.use("/client", require("./router/Client"));
+app.use("/client", require("./router/client"));
 
 app.use("/", require("./router/nodemailer"));
 
+app.use("/commande", require("./router/commande"));
+
+app.use("/user", require("./router/user"));
 
 
 

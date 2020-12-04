@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 // SECRET_KEY permet de stocker des données de façon sûre, secret est notre valeur
 process.env.SECRET_KEY = "secret";
 
+
 /* cette route permet à un utilisateur de créer un compte */
 router.post("/register", (req, res) => {
     db.client.findOne({
@@ -239,6 +240,7 @@ router.post("/validemail", (req, res) => {
 
 /* cette route permet à l'utilisateur de ce connecter avec ses identifiants */
 router.post("/login", (req, res) => {
+    console.log();
     db.client.findOne({
             where: {
                 email: req.body.email

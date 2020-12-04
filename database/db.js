@@ -45,6 +45,8 @@ db.commande = require("../models/Commande")(dbinfo, Sequelize);
 db.facture = require("../models/Facture")(dbinfo, Sequelize);
 db.livraison = require("../models/Livraison")(dbinfo, Sequelize);
 db.paiement = require("../models/Paiement")(dbinfo, Sequelize);
+db.user = require("../models/User")(dbinfo, Sequelize);
+
 
 /* table des tables intermédiaires */
 db.contenir = require("../models/Contenir")(dbinfo, Sequelize);
