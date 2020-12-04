@@ -26,7 +26,7 @@ module.exports = (dbinfo, Sequelize) => {
             status: {
                 type: Sequelize.DataTypes.BOOLEAN,
                 allowNull: true
-            }
+            },
 
         }, {
 

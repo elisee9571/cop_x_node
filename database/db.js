@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 const db = {};
 
 
-// new Sequelize crée une instance qui permet la connection à la base de donnée (qu'on a nommé "dbformation")
+// new Sequelize crée une instance qui permet la connection à la base de donnée (qu'on a nommé "db_copx")
 const dbinfo = new Sequelize("db_copx", "root", "", {
     host: "localhost",
     dialect: "mysql",
@@ -45,6 +45,8 @@ db.commande = require("../models/Commande")(dbinfo, Sequelize);
 db.facture = require("../models/Facture")(dbinfo, Sequelize);
 db.livraison = require("../models/Livraison")(dbinfo, Sequelize);
 db.paiement = require("../models/Paiement")(dbinfo, Sequelize);
+db.user = require("../models/User")(dbinfo, Sequelize);
+
 
 /* table des tables intermédiaires */
 db.contenir = require("../models/Contenir")(dbinfo, Sequelize);

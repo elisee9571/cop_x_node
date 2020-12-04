@@ -40,7 +40,7 @@ module.exports = (dbinfo, Sequelize) => {
                 allowNull: true
             },
             prix: {
-                type: Sequelize.DataTypes.DECIMAL(7, 2),
+                type: Sequelize.DataTypes.TEXT,
             },
         }, {
 
