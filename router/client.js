@@ -201,7 +201,6 @@ router.post("/updatepassword", (req, res) => {
 });
 
 
-
 /* cette route permet à l'utilisateur de pouvoir valider son mail une fois le compte crée */
 router.post("/validemail", (req, res) => {
 
