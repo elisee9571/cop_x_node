@@ -123,6 +123,42 @@ router.get("/All", (req, res) => {
         })
 });
 
+/* cette route nous permet de connaitre nos produits par categorie avc limit*/
+router.get("/categorie/:categorie/:limit", (req, res) => {
+    db.produit.findAll({
+
+            where: {
+                categorie: req.params.categorie
+            },
+
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            limit: parseInt(req.params.limit),
+
+            order: [
+                ["created_at", "DESC"],
+            ],
+        })
+        .then(produit => {
+
+            if (produit == []) {
+                res.status(404).json("pas de liste de produits dans la base ")
+            } else {
+
+                res.status(200).json({
+                    produits: produit
+                })
+            }
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        })
+});
 /* cette route nous permet de connaitre nos produits par categorie */
 router.get("/categorie/:categorie", (req, res) => {
     db.produit.findAll({
@@ -138,6 +174,7 @@ router.get("/categorie/:categorie", (req, res) => {
                     model: db.taille,
                 },
             ],
+
             order: [
                 ["created_at", "DESC"],
             ],
