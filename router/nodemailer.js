@@ -22,8 +22,6 @@ router.post("/sendmail", (req, res) => {
 
     });
     var mailOptions = {
-        /* from: "eltest2node@gmail.com",
-        to: req.body.email, */
         from: req.body.email,
         to: "eltest2node@gmail.com",
         subject: req.body.subject,

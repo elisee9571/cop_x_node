@@ -39,6 +39,10 @@ module.exports = (dbinfo, Sequelize) => {
                 type: Sequelize.DataTypes.STRING(255),
                 allowNull: true
             },
+            avantage6: {
+                type: Sequelize.DataTypes.STRING(255),
+                allowNull: true
+            },
             prix: {
                 type: Sequelize.DataTypes.TEXT,
             },
