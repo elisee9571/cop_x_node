@@ -278,6 +278,34 @@ router.get("/all/:limit/:offset", (req, res) => {
             res.json(err);
         });
 });
+
+/* cette route nous permet de définir un début et une limite */
+router.get("/all/:limit", (req, res) => {
+    db.produit
+        .findAll({
+            include: [{
+                    model: db.image,
+                },
+                {
+                    model: db.taille,
+                },
+            ],
+            limit: parseInt(req.params.limit),
+            order: [
+                ["created_at", "DESC"],
+            ],
+        })
+        .then(produits => {
+            res.status(200).json({
+                produits: produits
+            })
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+
 /* cette route nous permet de définir un ordre de produit par rapport à ca date de creation 
 dans l'ordre descroissant*/
 router.get("/order/:categorie", (req, res) => {
@@ -509,58 +537,6 @@ router.get("/prix00/:marque/:categorie", (req, res) => {
             res.json(err);
         });
 });
-/* /* cette route nous peremet de recuperer le produit id 
-router.get("/getById/:id/:marque/:categorie", (req, res) => {
-    db.produit
-        .findOne({
-            where: {
-                id: req.params.id,
-                categorie: req.params.categorie,
-                marque: req.params.marque,
-            },
-            include: [{
-                    model: db.image,
-                },
-                {
-                    model: db.taille,
-                },
-            ],
-        })
-        .then((produit) => {
-            res.status(200).json({
-                produit: produit
-            });
-        })
-        .catch((err) => {
-            res.json(err);
-        });
-});*/
-/* cette route nous peremet de recuperer le produit id 
-router.get("/getById/:id/:categorie", (req, res) => {
-    db.produit
-        .findOne({
-            where: {
-                id: req.params.id,
-                categorie: req.params.categorie,
-            },
-            include: [{
-                    model: db.image,
-                },
-                {
-                    model: db.taille,
-                },
-            ],
-        })
-        .then((produit) => {
-            res.status(200).json({
-                produit: produit
-            });
-        })
-        .catch((err) => {
-            res.json(err);
-        });
-}); */
-
 
 /* cette route nous permet d'ajouter une image à un produit */
 router.post("/addimage", (req, res) => {
@@ -622,6 +598,7 @@ router.post("/addtaille", (req, res) => {
                 })
         })
 });
+
 
 /* cette route nous permet de rechercher avec le nom un produit spécifique */
 router.get("/findBy/:nom", (req, res) => {
