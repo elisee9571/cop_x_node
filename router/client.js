@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database/db");
 const jwt = require("jsonwebtoken");
+// decoder le token
 const bcrypt = require("bcrypt");
+// encoder des données
+
+/* methods = il y en a 7 : 
+post, get, put, delete, option, head, patch, trace */
 
 // SECRET_KEY permet de stocker des données de façon sûre, secret est notre valeur
 process.env.SECRET_KEY = "secret";
@@ -24,19 +29,19 @@ router.post("/register", (req, res) => {
                         /* res.setHeader('Content-Type', 'text/html'); */
                         var nodemailer = require("nodemailer");
                         var transporter = nodemailer.createTransport({
-                            /* host: 'smtp.gmail.com',
-                            port: '587', */
+                            host: 'smtp.gmail.com',
+                            port: '587',
                             service: "gmail",
                             auth: {
                                 user: "eltest2node@gmail.com",
                                 pass: "Eltest2nodemailer"
+
                             },
-                            /* secureConnection: 'false',
+                            secureConnection: 'false',
                             tls: {
                                 ciphers: 'SSLv3',
                                 rejectUnauthorized: false
-                            } */
-
+                            }
                         });
                         var mailOptions = {
                             from: "eltest2node@gmail.com",

@@ -1,4 +1,10 @@
-// sequelize permet de créer une base de donner, créer des tables, lire, écrire, supprimer, modifer et lier nos tables
+// http est la securisation du ssl 
+// le domaine du site en gros
+
+
+/* sequelize permet de créer une base de donner, créer des tables, lire, écrire, supprimer, modifer et lier nos tables
+"ORM", "Mapping objet-relationnel" est un type de programme informatique qui se place en interface 
+entre un programme applicatif et une base de données relationnelle pour simuler une base de données orientée objet. */
 const Sequelize = require("sequelize");
 
 // db est un objet
@@ -7,14 +13,14 @@ const db = {};
 
 // new Sequelize crée une instance qui permet la connection à la base de donnée (qu'on a nommé "db_copx")
 const dbinfo = new Sequelize("db_copx", "root", "", {
-    host: "localhost",
-    dialect: "mysql",
+    host: "localhost", // serveur local
+    dialect: "mysql", // serveur de base de donnéé
     port: 3306,
     pool: {
         max: 5,
         min: 0,
-    }
-}); // instance de ma base de donnée
+    } // nbr d'utilisateur par connection
+});
 
 
 // connection à la database
@@ -60,11 +66,14 @@ db.recevoir = require("../models/Recevoir")(dbinfo, Sequelize);
 /* 
 Il existe quatre types d'associations disponibles dans Sequelize
 
-BelongsTo  : permet de creer une association
+BelongsTo (0/1) : permet de creer une association
  - Les associations sont des associations dans lesquelles la clé étrangère pour la relation un-à-un existe sur le modèle source.(0/1)
- HasOne        :  Les associations sont des associations dans lesquelles la clé étrangère pour la relation un-à-un existe sur le modèle cible.(1/1)
- HasMany       :  les associations connectent une source à plusieurs cibles. Les cibles sont cependant à nouveau connectées à exactement une source spécifique.(1/N) ou (N/N)
- BelongsToMany :permet de creer une association
+
+ HasOne  (1/1) : Les associations sont des associations dans lesquelles la clé étrangère pour la relation un-à-un existe sur le modèle cible.(1/1)
+
+ HasMany (1/N) : les associations connectent une source à plusieurs cibles. Les cibles sont cependant à nouveau connectées à exactement une source spécifique.(1/N) ou (N/N)
+
+ BelongsToMany (0/N) :permet de creer une association
  - Les associations sont utilisées pour connecter des sources avec plusieurs cibles. En outre, les cibles peuvent également avoir des connexions à plusieurs sources.(0/N) */
 
 
@@ -163,5 +172,3 @@ db.Sequelize = Sequelize;
 
 
 module.exports = db;
-
-/* test */
