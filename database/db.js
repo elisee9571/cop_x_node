@@ -42,7 +42,7 @@ dbinfo.authenticate()
 nous avons besoin de certaines données dans cette table */
 
 /* table */
-db.taille = require("../models/Taille")(dbinfo, Sequelize);
+db.stock = require("../models/Stock")(dbinfo, Sequelize);
 db.image = require("../models/Image")(dbinfo, Sequelize);
 db.produit = require("../models/Produit")(dbinfo, Sequelize);
 db.client = require("../models/Client")(dbinfo, Sequelize);
@@ -83,9 +83,9 @@ BelongsTo (0/1) : permet de creer une association
 db.produit.hasMany(db.image, {
     foreignKey: 'produitId'
 }); // produit 1/N image - cas contraire Image 1/1 produit (donc l'Id produit va dans la table image (le N vers le plus petit ))
-db.produit.hasMany(db.taille, {
+db.produit.hasMany(db.stock, {
     foreignKey: 'produitId'
-}); // produit 1/N taille - cas contraire taille 1/1 produit (donc l'Id produit va dans la table taille (le N vers le plus petit ))
+}); // produit 1/N stock - cas contraire stock 1/1 produit (donc l'Id produit va dans la table stock (le N vers le plus petit ))
 db.produit.hasMany(db.facture, {
     foreignKey: 'produitId'
 }); // produit 1/N facture - cas contraire facture 1/1 produit (donc l'Id produit va dans la table facture (le N vers le plus petit ))

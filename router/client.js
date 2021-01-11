@@ -95,7 +95,7 @@ router.post("/register", (req, res) => {
                                 return res.status(200).json({
                                     message: "Vous devez valider votre mail",
                                     email: itemclient.email,
-                                    email_sent: info.response
+                                    email_sent: info.response,
                                 })
                             }
                         });

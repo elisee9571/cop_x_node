@@ -11,36 +11,6 @@ module.exports = (dbinfo, Sequelize) => {
                 // set autoIncrement = true
                 autoIncrement: true
             },
-            nom: {
-                type: Sequelize.DataTypes.STRING(60),
-                allowNull: true
-            },
-            prenom: {
-                type: Sequelize.DataTypes.STRING(60),
-                allowNull: true,
-                /* n'est pas obliger de remplir */
-            },
-            adresse: {
-                type: Sequelize.DataTypes.STRING(150),
-                allowNull: true
-            },
-
-            ville: {
-                type: Sequelize.DataTypes.STRING(150),
-                allowNull: true
-            },
-            cp: {
-                type: Sequelize.DataTypes.INTEGER(5),
-                allowNull: true
-            },
-            pays: {
-                type: Sequelize.DataTypes.STRING(60),
-                allowNull: true
-            },
-            montant: {
-                type: Sequelize.DataTypes.INTEGER,
-                allowNull: true
-            },
         }, {
 
             /*  By default, Sequelize will add the attributes createdAt and updatedAt to your model so you will be able to know when the database entry went into the db and when it was updated last.

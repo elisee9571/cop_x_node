@@ -10,7 +10,7 @@ const {
 router.post("/new", (req, res) => {
     console.log(req.body);
     var image = req.body.image;
-    var taille = req.body.taille;
+    var stock = req.body.stock;
     var ref = req.body.ref;
 
     db.produit.findOne({
@@ -27,12 +27,12 @@ router.post("/new", (req, res) => {
                                 produitId: itemproduit.id
                             })
                             .then(() => {
-                                db.taille.create({
-                                        taille: taille,
+                                db.stock.create({
+                                        stock: stock,
                                         produitId: itemproduit.id
                                     })
                                     .then(() => {
-                                        db.taille.create({
+                                        db.stock.create({
                                                 ref: ref,
                                                 produitId: itemproduit.id
                                             })
@@ -45,7 +45,7 @@ router.post("/new", (req, res) => {
                                                                 model: db.image
                                                             },
                                                             {
-                                                                model: db.taille
+                                                                model: db.stock
                                                             },
                                                         ]
                                                     })
@@ -96,6 +96,43 @@ router.post("/new", (req, res) => {
         })
 });
 
+/* cette route nous permet d'ajouter une stock à un produit */
+router.post("/addstock", (req, res) => {
+    console.log(req.body);
+
+    db.stock.create({
+            stock: req.body.stock,
+            produitId: req.body.id,
+            taille: req.body.taille,
+            prix: req.body.prix,
+            quantite: req.body.quantite,
+            inStock: req.body.inStock,
+        })
+        .then(() => {
+            db.produit.findOne({
+                    where: {
+                        id: req.body.id,
+
+                    },
+                    include: [{
+                            model: db.image
+                        },
+                        {
+                            model: db.stock
+                        },
+                    ]
+                })
+                .then(produit => {
+                    res.status(200).json({
+                        produit: produit
+                    })
+                })
+                .catch(err => {
+                    res.json(err)
+                })
+        })
+});
+
 /* cette route nous permet de connaitre nos produits */
 router.get("/All", (req, res) => {
     db.produit.findAll({
@@ -103,7 +140,7 @@ router.get("/All", (req, res) => {
                     model: db.image
                 },
                 {
-                    model: db.taille
+                    model: db.stock
                 },
             ]
         })
@@ -135,7 +172,7 @@ router.get("/categorie/:categorie/:limit", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             limit: parseInt(req.params.limit),
@@ -171,7 +208,7 @@ router.get("/categorie/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
 
@@ -208,7 +245,7 @@ router.get("/marque/:marque/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -238,7 +275,7 @@ router.get("/limit/:limit", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             limit: parseInt(req.params.limit),
@@ -263,7 +300,7 @@ router.get("/all/:limit/:offset", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             offset: parseInt(req.params.offset),
@@ -287,7 +324,7 @@ router.get("/all/:limit", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             limit: parseInt(req.params.limit),
@@ -319,7 +356,7 @@ router.get("/order/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -349,7 +386,7 @@ router.get("/order0/:marque/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -375,7 +412,7 @@ router.get("/order1/:limit", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -402,7 +439,7 @@ router.get("/order2/:limit", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -433,7 +470,7 @@ router.get("/prix/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -462,7 +499,7 @@ router.get("/prix0/:marque/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -492,7 +529,7 @@ router.get("/prix1/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -521,7 +558,7 @@ router.get("/prix00/:marque/:categorie", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -553,38 +590,7 @@ router.post("/addimage", (req, res) => {
                             model: db.image
                         },
                         {
-                            model: db.taille
-                        },
-                    ]
-                })
-                .then(produit => {
-                    res.status(200).json({
-                        produit: produit
-                    })
-                })
-                .catch(err => {
-                    res.json(err)
-                })
-        })
-});
-
-
-/* cette route nous permet d'ajouter une taille à un produit */
-router.post("/addtaille", (req, res) => {
-    db.taille.create({
-            taille: req.body.taille,
-            produitId: req.body.id,
-        })
-        .then(() => {
-            db.produit.findOne({
-                    where: {
-                        id: req.body.id
-                    },
-                    include: [{
-                            model: db.image
-                        },
-                        {
-                            model: db.taille
+                            model: db.stock
                         },
                     ]
                 })
@@ -612,7 +618,7 @@ router.get("/findBy/:nom", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
             order: [
@@ -640,7 +646,7 @@ router.get("/getById/:id", (req, res) => {
                     model: db.image,
                 },
                 {
-                    model: db.taille,
+                    model: db.stock,
                 },
             ],
         })

@@ -11,17 +11,6 @@ module.exports = (dbinfo, Sequelize) => {
                 // set autoIncrement = true
                 autoIncrement: true
             },
-            nom: {
-                type: Sequelize.DataTypes.STRING(60),
-                allowNull: true
-            },
-            prix: {
-                type: Sequelize.DataTypes.DECIMAL(7, 2),
-            },
-            description: {
-                type: Sequelize.DataTypes.TEXT,
-                allowNull: true
-            },
         }, {
 
             /*  By default, Sequelize will add the attributes createdAt and updatedAt to your model so you will be able to know when the database entry went into the db and when it was updated last.

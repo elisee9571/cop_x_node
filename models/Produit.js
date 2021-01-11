@@ -19,10 +19,6 @@ module.exports = (dbinfo, Sequelize) => {
                 //set data type with out max length
                 type: Sequelize.DataTypes.TEXT,
             },
-            prix: {
-                type: Sequelize.DataTypes.INTEGER(6),
-                allowNull: true
-            },
             marque: {
                 type: Sequelize.DataTypes.STRING(60),
                 allowNull: true
@@ -34,10 +30,6 @@ module.exports = (dbinfo, Sequelize) => {
             ref: {
                 type: Sequelize.DataTypes.TEXT,
                 allowNull: true
-            },
-            stock: {
-                //set data type with out max length
-                type: Sequelize.DataTypes.INTEGER(5),
             },
             status: {
                 //set data type with max length
