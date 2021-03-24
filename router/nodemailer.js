@@ -11,7 +11,7 @@ router.post("/sendmail", (req, res) => {
         service: "gmail",
         auth: {
             user: "eltest2node@gmail.com",
-            pass: "Eltest2nodemailer"
+            pass: ""
 
         },
         /* secureConnection: 'false',
