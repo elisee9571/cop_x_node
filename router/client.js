@@ -29,7 +29,7 @@ router.post("/register", (req, res) => {
                             service: "gmail",
                             auth: {
                                 user: "eltest2node@gmail.com",
-                                pass: "Eltest2nodemailer"
+                                pass: ""
                             },
                             /* secureConnection: 'false',
                             tls: {
@@ -131,7 +131,7 @@ router.post("/forgetpassword", (req, res) => {
                             service: "gmail",
                             auth: {
                                 user: "eltest2node@gmail.com",
-                                pass: "Eltest2nodemailer"
+                                pass: ""
                             },
                         });
 
